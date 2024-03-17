@@ -1,7 +1,7 @@
 
 
 const express=require("express")
-const { default: mongoose } = require("mongoose")
+const mongoose = require("mongoose")
 var cors = require('cors')
 
  
@@ -11,16 +11,28 @@ const app=express()
 app.use(express.json())
 app.use(cors())
 
-  const connect =()=>{
-    return mongoose.connect("mongodb://localhost:27017/tutorshive")
-  }
+mongoose.set("strictQuery", false);
+mongoose
+  .connect(
+    "mongodb+srv://Raj_1998:5282@cluster0.3ob4eav.mongodb.net/TutorsHive?retryWrites=true&w=majority&appName=Cluster0",
+    {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    }
+  )
+  .then((res) => {
+    console.log("Connected to MongoDb successfully");
+  })
+  .catch((err) => {
+    console.log("Failed to connect", err);
+  });
 
 
 
   app.post("/login",async(req,res)=>{
 
     try {
-           
+                
           const data= await User.findOne({email:req.body.email})
           const password= await User.findOne({password:req.body.password})
           if(data && password ){
@@ -90,7 +102,6 @@ app.use(cors())
 
 app.listen(8080,async function(){
    try {
-          await connect()
        console.log("port 8080 running")
    } catch (error) {
     
