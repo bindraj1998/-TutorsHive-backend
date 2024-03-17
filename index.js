@@ -34,8 +34,8 @@ mongoose
     try {
                 
           const data= await User.findOne({email:req.body.email})
-          const password= await User.findOne({password:req.body.password})
-          if(data && password ){
+
+          if(data && data.password==req.body.password){
             res.send({message:"Login successfully"})
           }
           else{
